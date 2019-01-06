@@ -32,6 +32,9 @@
 
 #include "plaits/resources.h"
 
+#define _WAVETABLE(type)    wav_integrated_waves_##type
+#define WAVETABLE(type)     _WAVETABLE(type)
+
 namespace plaits {
 
 using namespace std;
@@ -78,9 +81,9 @@ inline float ReadWave(
     int randomize,
     int phase_integral,
     float phase_fractional) {
-  int wave = ((x + y * 8 + z * 64) * randomize) % 192;
+  int wave = ((x + y * 8 + z * 64) * randomize) % 32;
   return InterpolateWaveHermite(
-      wav_integrated_waves + wave * (table_size + 4),
+      WAVETABLE(OSCILLATOR_TYPE) + wave * (table_size + 4),
       phase_integral,
       phase_fractional);
 }
@@ -94,7 +97,7 @@ void WavetableEngine::Render(
   const float f0 = NoteToFrequency(parameters.note);
   
   ONE_POLE(x_pre_lp_, parameters.timbre * 6.9999f, 0.2f);
-  ONE_POLE(y_pre_lp_, parameters.morph * 6.9999f, 0.2f);
+  ONE_POLE(y_pre_lp_, parameters.morph * (6.9999f / 2.0f), 0.2f);
   ONE_POLE(z_pre_lp_, parameters.harmonics * 6.9999f, 0.05f);
   
   const float x = x_pre_lp_;

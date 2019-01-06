@@ -38,6 +38,13 @@ BRAIDS_WAVES = numpy.fromstring(
 
 wavetables = []
 
+wavetable_bank_1a = []
+wavetable_bank_1b = []
+wavetable_bank_2a = []
+wavetable_bank_2b = []
+wavetable_bank_3a = []
+wavetable_bank_3b = []
+
 def sine(frequency):
   t = numpy.arange(0, WAVETABLE_SIZE) / float(WAVETABLE_SIZE)
   if frequency >= WAVETABLE_SIZE / 2:
@@ -231,14 +238,16 @@ def make_braids_family(indices, fix=False):
 
 
 # Bank 1: mild and additive.
-bank_1 = []
-bank_1 += make_family(sine, [1, 2, 3, 4, 5, 6, 7, 8])
-bank_1 += make_family(sine, [2, 3, 4, 6, 8, 12, 16, 24])
-bank_1 += make_family(quadra, [2, 3, 4, 6, 8, 12, 16, 24])
-bank_1 += make_family(comb, [2, 3, 5, 8, 13, 21, 34, 55])
-bank_1 += make_family(pair, [2, 4, 6, 8, 10, 12, 14, 16])
-bank_1 += make_family(tri_stack, [2, 4, 6, 8, 10, 12, 14, 16])
-bank_1 += make_family(drawbars, [
+bank_1a = []
+bank_1a += make_family(sine, [1, 2, 3, 4, 5, 6, 7, 8])
+bank_1a += make_family(sine, [2, 3, 4, 6, 8, 12, 16, 24])
+bank_1a += make_family(quadra, [2, 3, 4, 6, 8, 12, 16, 24])
+bank_1a += make_family(comb, [2, 3, 5, 8, 13, 21, 34, 55])
+
+bank_1b = []
+bank_1b += make_family(pair, [2, 4, 6, 8, 10, 12, 14, 16])
+bank_1b += make_family(tri_stack, [2, 4, 6, 8, 10, 12, 14, 16])
+bank_1b += make_family(drawbars, [
     '688600000',
     '686040000',
     '666806000',
@@ -247,7 +256,7 @@ bank_1 += make_family(drawbars, [
     '688500888',
     '660000888',
     '060000046'])
-bank_1 += make_family(drawbars, [
+bank_1b += make_family(drawbars, [
     '867000006', 
     '888876788', 
     '668744354',
@@ -258,45 +267,59 @@ bank_1 += make_family(drawbars, [
     '002050321'])
 
 # Bank 2: formantish.
-bank_2 = []
-bank_2 += make_family(trisaw, [1, 1.5, 2, 3, 4, 4.5, 5, 8])
-bank_2 += make_family(sawtri, [1, 1.5, 2, 3, 4, 4.5, 5, 8])
-bank_2 += make_family(burst, [0.5, 0.4, 1/3.0, 0.25, 0.2, 0.125, 1/16.0, 1/32.0])
-bank_2 += make_family(bandpass_formant, [2.0, 3.0, 4.0, 6.0, 8.0, 9.0, 10.0, 16.0])
-bank_2 += make_family(formant_f, xrange(8))
-bank_2 += make_family(digi_formant_f, xrange(8))
-bank_2 += make_family(pulse, [0.5, 0.4, 1/3.0, 0.25, 0.2, 0.125, 1/16.0, 1/32.0])
-bank_2 += make_family(sine_power, xrange(8))
+bank_2a = []
+bank_2a += make_family(trisaw, [1, 1.5, 2, 3, 4, 4.5, 5, 8])
+bank_2a += make_family(sawtri, [1, 1.5, 2, 3, 4, 4.5, 5, 8])
+bank_2a += make_family(burst, [0.5, 0.4, 1/3.0, 0.25, 0.2, 0.125, 1/16.0, 1/32.0])
+bank_2a += make_family(bandpass_formant, [2.0, 3.0, 4.0, 6.0, 8.0, 9.0, 10.0, 16.0])
+
+bank_2b = []
+bank_2b += make_family(formant_f, xrange(8))
+bank_2b += make_family(digi_formant_f, xrange(8))
+bank_2b += make_family(pulse, [0.5, 0.4, 1/3.0, 0.25, 0.2, 0.125, 1/16.0, 1/32.0])
+bank_2b += make_family(sine_power, xrange(8))
 
 # Bank 3: shruthi/ambika/braids.
-bank_3 = []
-bank_3 += make_braids_family([0, 2, 4, 6, 8, 10, 12, 14])  # Male
-bank_3 += make_braids_family([32, 34, 36, 38, 40, 42, 44, 46])  # Choir
+bank_3a = []
+bank_3a += make_braids_family([0, 2, 4, 6, 8, 10, 12, 14])  # Male
+bank_3a += make_braids_family([32, 34, 36, 38, 40, 42, 44, 46])  # Choir
 # bank_3 += make_braids_family([64, 66, 68, 70, 72, 74, 76, 62])  # Tampura
-bank_3 += make_braids_family([176, 189, 191, 193, 195, 197, 199, 201])  # Digi
-bank_3 += make_braids_family([203, 204, 205, 206, 207, 208, 209, 211])  # Drone
-bank_3 += make_braids_family([220, 222, 224, 226, 228, 230, 232, 234])  # Metal
-bank_3 += make_braids_family([236, 238, 240, 242, 244, 246, 248, 250])  # Fant
-bank_3 += make_braids_family([172, 173, 174, 175, 176, 177, 178, 179], False)
-bank_3 += make_braids_family([180, 181, 182, 183, 184, 185, 186, 187], False)
+bank_3a += make_braids_family([176, 189, 191, 193, 195, 197, 199, 201])  # Digi
+bank_3a += make_braids_family([203, 204, 205, 206, 207, 208, 209, 211])  # Drone
 
-all_waves = bank_1 + bank_2 + bank_3
+bank_3b = []
+bank_3b += make_braids_family([220, 222, 224, 226, 228, 230, 232, 234])  # Metal
+bank_3b += make_braids_family([236, 238, 240, 242, 244, 246, 248, 250])  # Fant
+bank_3b += make_braids_family([172, 173, 174, 175, 176, 177, 178, 179], False)
+bank_3b += make_braids_family([180, 181, 182, 183, 184, 185, 186, 187], False)
 
-# New wavetable code uses integrated wavetables
-# Reference:
-# "Higher-order integrated Wavetable Synthesis", Franck & Valimaki, DAFX-12.
-#
-# Here we use K = 1 (first order), N = 1 (linear interpolation).
-data = []
-for wave in all_waves:
-  n = len(wave)
-  x = numpy.array(list(wave) * 2 + wave[0] + wave[1] + wave[2] + wave[3])
-  x -= x.mean()
-  x /= numpy.abs(x).max()
+all_waves = bank_1a + bank_1b + bank_2a + bank_2b + bank_3a + bank_3b
+
+def prepare_data(waves):
+  # New wavetable code uses integrated wavetables
+  # Reference:
+  # "Higher-order integrated Wavetable Synthesis", Franck & Valimaki, DAFX-12.
+  #
+  # Here we use K = 1 (first order), N = 1 (linear interpolation).
+  data = []
+  for wave in waves:
+    n = len(wave)
+    x = numpy.array(list(wave) * 2 + wave[0] + wave[1] + wave[2] + wave[3])
+    x -= x.mean()
+    x /= numpy.abs(x).max()
+    
+    x = numpy.cumsum(x)
+    x -= x.mean()
+    x = list(numpy.round(x * (4 * 32768.0 / WAVETABLE_SIZE)).astype(int))
+    data += list(x[-n-4:])
+  return data
   
-  x = numpy.cumsum(x)
-  x -= x.mean()
-  x = list(numpy.round(x * (4 * 32768.0 / WAVETABLE_SIZE)).astype(int))
-  data += list(x[-n-4:])
-  
-wavetables.append(('integrated_waves', data))
+wavetables.append(('integrated_waves', prepare_data(all_waves)))
+
+
+wavetable_bank_1a.append(('integrated_waves_wta', prepare_data(bank_1a)))
+wavetable_bank_1b.append(('integrated_waves_wtb', prepare_data(bank_1b)))
+wavetable_bank_2a.append(('integrated_waves_wtc', prepare_data(bank_2a)))
+wavetable_bank_2b.append(('integrated_waves_wtd', prepare_data(bank_2b)))
+wavetable_bank_3a.append(('integrated_waves_wte', prepare_data(bank_3a)))
+wavetable_bank_3b.append(('integrated_waves_wtf', prepare_data(bank_3b)))

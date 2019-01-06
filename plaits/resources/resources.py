@@ -80,5 +80,17 @@ resources = [
   (lookup_tables.lookup_tables_i8,
    'lookup_table_i8', 'LUT', 'int8_t', int, False),
   (wavetables.wavetables,
-   'wavetables', 'WAV', 'int16_t', int, False)
+   'wavetables', 'WAV', 'int16_t', int, False),
+  (wavetables.wavetable_bank_1a,
+   'wavetable_bank_1a', 'WAV', 'int16_t', int, False),
+  (wavetables.wavetable_bank_1b,
+   'wavetable_bank_1b', 'WAV', 'int16_t', int, False),
+  (wavetables.wavetable_bank_2a,
+   'wavetable_bank_2a', 'WAV', 'int16_t', int, False),
+  (wavetables.wavetable_bank_2b,
+   'wavetable_bank_2b', 'WAV', 'int16_t', int, False),
+  (wavetables.wavetable_bank_3a,
+   'wavetable_bank_3a', 'WAV', 'int16_t', int, False),
+  (wavetables.wavetable_bank_3b,
+   'wavetable_bank_3b', 'WAV', 'int16_t', int, False),
 ]

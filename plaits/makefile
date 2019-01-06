@@ -50,7 +50,7 @@ PACKAGES       = plaits \
 		stmlib/system
 RESOURCES      = plaits/resources
 
-TOOLCHAIN_PATH ?= /usr/local/arm-4.8.3/
+TOOLCHAIN_PATH ?= /Users/allwin/Development/misc/macro-oscillator2-prologue/logue-sdk/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/
 
 include stmlib/makefile.inc
 
