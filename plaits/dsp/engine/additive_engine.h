@@ -29,6 +29,10 @@
 #ifndef PLAITS_DSP_ENGINE_ADDITIVE_ENGINE_H_
 #define PLAITS_DSP_ENGINE_ADDITIVE_ENGINE_H_
 
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 #include "plaits/dsp/engine/engine.h"
 #include "plaits/dsp/oscillator/harmonic_oscillator.h"
 
