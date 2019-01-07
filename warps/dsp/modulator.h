@@ -152,6 +152,9 @@ class Modulator {
   inline bool easter_egg() const { return easter_egg_; }
   inline void set_easter_egg(bool easter_egg) { easter_egg_ = easter_egg; }
   
+  template<XmodAlgorithm algorithm>
+  static float Xmod(float x_1, float x_2, float parameter);
+
  private:
   template<XmodAlgorithm algorithm_1, XmodAlgorithm algorithm_2>
   void ProcessXmod(
@@ -199,10 +202,7 @@ class Modulator {
       }
     }
   }
-  
-  template<XmodAlgorithm algorithm>
-  static float Xmod(float x_1, float x_2, float parameter);
-  
+    
   static float Diode(float x);
   
   bool bypass_;

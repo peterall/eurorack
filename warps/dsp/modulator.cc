@@ -26,6 +26,10 @@
 //
 // Modulator.
 
+#ifndef M_PI
+#define M_PI 3.141592653589793f
+#endif
+
 #include "warps/dsp/modulator.h"
 
 #include <algorithm>
@@ -357,7 +361,7 @@ inline float Modulator::Diode(float x) {
 
 /* static */
 template<>
-inline float Modulator::Xmod<ALGORITHM_XFADE>(
+float Modulator::Xmod<ALGORITHM_XFADE>(
     float x_1, float x_2, float parameter) {
   float fade_in = Interpolate(lut_xfade_in, parameter, 256.0f);
   float fade_out = Interpolate(lut_xfade_out, parameter, 256.0f);
@@ -366,7 +370,7 @@ inline float Modulator::Xmod<ALGORITHM_XFADE>(
 
 /* static */
 template<>
-inline float Modulator::Xmod<ALGORITHM_FOLD>(
+float Modulator::Xmod<ALGORITHM_FOLD>(
     float x_1, float x_2, float parameter) {
   float sum = 0.0f;
   sum += x_1;
@@ -379,7 +383,7 @@ inline float Modulator::Xmod<ALGORITHM_FOLD>(
 
 /* static */
 template<>
-inline float Modulator::Xmod<ALGORITHM_ANALOG_RING_MODULATION>(
+float Modulator::Xmod<ALGORITHM_ANALOG_RING_MODULATION>(
     float modulator, float carrier, float parameter) {
   carrier *= 2.0f;
   float ring = Diode(modulator + carrier) + Diode(modulator - carrier);
@@ -389,7 +393,7 @@ inline float Modulator::Xmod<ALGORITHM_ANALOG_RING_MODULATION>(
 
 /* static */
 template<>
-inline float Modulator::Xmod<ALGORITHM_DIGITAL_RING_MODULATION>(
+float Modulator::Xmod<ALGORITHM_DIGITAL_RING_MODULATION>(
     float x_1, float x_2, float parameter) {
   float ring = 4.0f * x_1 * x_2 * (1.0f + parameter * 8.0f);
   return ring / (1.0f + fabs(ring));
@@ -397,7 +401,7 @@ inline float Modulator::Xmod<ALGORITHM_DIGITAL_RING_MODULATION>(
 
 /* static */
 template<>
-inline float Modulator::Xmod<ALGORITHM_XOR>(
+float Modulator::Xmod<ALGORITHM_XOR>(
     float x_1, float x_2, float parameter) {
   short x_1_short = Clip16(static_cast<int32_t>(x_1 * 32768.0f));
   short x_2_short = Clip16(static_cast<int32_t>(x_2 * 32768.0f));
@@ -408,7 +412,7 @@ inline float Modulator::Xmod<ALGORITHM_XOR>(
 
 /* static */
 template<>
-inline float Modulator::Xmod<ALGORITHM_COMPARATOR>(
+float Modulator::Xmod<ALGORITHM_COMPARATOR>(
     float modulator, float carrier, float parameter) {
   float x = parameter * 2.995f;
   MAKE_INTEGRAL_FRACTIONAL(x)
@@ -429,7 +433,7 @@ inline float Modulator::Xmod<ALGORITHM_COMPARATOR>(
 
 /* static */
 template<>
-inline float Modulator::Xmod<ALGORITHM_NOP>(
+float Modulator::Xmod<ALGORITHM_NOP>(
     float modulator, float carrier, float parameter) {
   return modulator;
 }
