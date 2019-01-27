@@ -27,6 +27,10 @@
 // Naive speech synth - made from "synthesizer" building blocks (pulse
 // oscillator and zero-delay SVF).
 
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 #include "plaits/dsp/speech/naive_speech_synth.h"
 
 #include <algorithm>

@@ -26,6 +26,10 @@
 //
 // Various flavours of speech synthesis.
 
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 #include "plaits/dsp/engine/speech_engine.h"
 
 #include "plaits/dsp/speech/lpc_speech_synth_words.h"
