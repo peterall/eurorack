@@ -64,8 +64,8 @@ void Exciter::Process(const uint8_t flags, float* out, size_t size) {
   damping_ = 0.0f;
   (this->*fn_table_[model_])(flags, out, size);
   // Apply filters.
-  if (model_ != EXCITER_MODEL_GRANULAR_SAMPLE_PLAYER &&
-      model_ != EXCITER_MODEL_SAMPLE_PLAYER) {
+//  if (model_ != EXCITER_MODEL_GRANULAR_SAMPLE_PLAYER &&
+//      model_ != EXCITER_MODEL_SAMPLE_PLAYER) {
     uint32_t cutoff_index = static_cast<uint32_t>(timbre_ * 256.0f);
     if (model_ == EXCITER_MODEL_NOISE) {
       uint32_t resonance_index = static_cast<uint32_t>(parameter_ * 256.0f);
@@ -79,7 +79,7 @@ void Exciter::Process(const uint8_t flags, float* out, size_t size) {
           lut_approx_svf_h[cutoff_index]);
     }
     lp_.Process<FILTER_MODE_LOW_PASS>(out, out, size);
-  }
+//  }
 }
 
 void Exciter::ProcessGranularSamplePlayer(
@@ -277,8 +277,8 @@ void Exciter::ProcessNoise(const uint8_t flags, float* out, size_t size) {
 
 /* static */
 Exciter::ProcessFn Exciter::fn_table_[] = {
-  &Exciter::ProcessGranularSamplePlayer,
-  &Exciter::ProcessSamplePlayer,
+//  &Exciter::ProcessGranularSamplePlayer,
+//  &Exciter::ProcessSamplePlayer,
   &Exciter::ProcessMallet,
   &Exciter::ProcessPlectrum,
   &Exciter::ProcessParticles,

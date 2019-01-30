@@ -40,9 +40,9 @@
 
 namespace elements {
 
-const size_t kMaxModes = 64;
-const size_t kMaxBowedModes = 8;
-const size_t kMaxDelayLineSize = 1024;
+const size_t kMaxModes = 20;
+const size_t kMaxBowedModes = 1;
+const size_t kMaxDelayLineSize = 256;
 
 class Resonator {
  public:

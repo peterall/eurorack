@@ -47,6 +47,8 @@ enum EnvelopeFlags {
   ENVELOPE_FLAG_GATE = 4
 };
 
+extern const float* env_lookup_table_table[];
+
 const uint16_t kMaxNumSegments = 6;
 
 class MultistageEnvelope {
@@ -84,7 +86,7 @@ class MultistageEnvelope {
       phase_increment = Interpolate8(lut_env_increments, time_[segment_]);
     }
     float t = Interpolate8(
-        lookup_table_table[LUT_ENV_LINEAR + shape_[segment_]],
+        env_lookup_table_table[shape_[segment_]],
         phase_);
     phase_ += phase_increment;
     value_ = start_value_ + (level_[segment_ + 1] - start_value_) * t;

@@ -35,6 +35,12 @@ namespace elements {
 using namespace std;
 using namespace stmlib;
 
+const float* env_lookup_table_table[3] = {
+  lut_env_linear,
+  lut_env_expo,
+  lut_env_quartic
+};
+
 void MultistageEnvelope::Init() {
   set_adsr(0, 0.25f, 0.25f, 0.5f);
   segment_ = num_segments_;
