@@ -40,9 +40,13 @@
 
 namespace elements {
 
-const size_t kMaxModes = 20;
-const size_t kMaxBowedModes = 1;
-const size_t kMaxDelayLineSize = 256;
+const size_t kMaxModes = 24;
+const size_t kMaxBowedModes = 2;
+const size_t kMaxDelayLineSize = 512;
+
+//const size_t kMaxModes = 24;
+//const size_t kMaxBowedModes = 2;
+//const size_t kMaxDelayLineSize = 512;
 
 class Resonator {
  public:
@@ -119,6 +123,13 @@ class Resonator {
   float bow_signal_;
   
   size_t resolution_;
+
+  float harmonic_;
+  float stretch_factor_;
+  float stiffness_;
+  float q_;
+  float q_loss_;
+  float q_loss_damping_rate_;
   
   stmlib::Svf f_[kMaxModes];
   stmlib::Svf f_bow_[kMaxBowedModes];

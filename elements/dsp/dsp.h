@@ -36,7 +36,7 @@
 namespace elements {
   
 static const float kSampleRate = 24000.0f;
-const size_t kMaxBlockSize = 128;
+const size_t kMaxBlockSize = 8;
 
 }  // namespace elements
 

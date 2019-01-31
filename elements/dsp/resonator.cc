@@ -59,63 +59,62 @@ void Resonator::Init() {
   set_resolution(kMaxModes);
   
   bow_signal_ = 0.0f;
+  clock_divider_ = 0;
 }
 
 size_t Resonator::ComputeFilters() {
-  ++clock_divider_;
-  float stiffness = Interpolate(lut_stiffness, geometry_, 256.0f);
-  float harmonic = frequency_;
-  float stretch_factor = 1.0f; 
-  float q = 500.0f * Interpolate(
-      lut_4_decades,
-      damping_ * 0.8f,
-      256.0f);
-  float brightness_attenuation = 1.0f - geometry_;
-  // Reduces the range of brightness when geometry is very low, to prevent
-  // clipping.
-  brightness_attenuation *= brightness_attenuation;
-  brightness_attenuation *= brightness_attenuation;
-  brightness_attenuation *= brightness_attenuation;
-  float brightness = brightness_ * (1.0f - 0.2f * brightness_attenuation);
-  float q_loss = brightness * (2.0f - brightness) * 0.85f + 0.15f;
-  float q_loss_damping_rate = geometry_ * (2.0f - geometry_) * 0.1f;
-  size_t num_modes = 0;
-  for (size_t i = 0; i < min(kMaxModes, resolution_); ++i) {
-    // Update the first 24 modes every time (2kHz). The higher modes are
-    // refreshed as a slowest rate.
-    bool update = i <= 24 || ((i & 1) == (clock_divider_ & 1));
-    float partial_frequency = harmonic * stretch_factor;
-    if (partial_frequency >= 0.49f) {
-      partial_frequency = 0.49f;
-    } else {
-      num_modes = i + 1;
-    }
-    if (update) {
-      f_[i].set_f_q<FREQUENCY_FAST>(
-          partial_frequency,
-          1.0f + partial_frequency * q);
-      if (i < kMaxBowedModes) {
-        size_t period = 1.0f / partial_frequency;
-        while (period >= kMaxDelayLineSize) period >>= 1;
-        d_bow_[i].set_delay(period);
-        f_bow_[i].set_g_q(f_[i].g(), 1.0f + partial_frequency * 1500.0f);
-      }
-    }
-    stretch_factor += stiffness;
-    if (stiffness < 0.0f) {
-      // Make sure that the partials do not fold back into negative frequencies.
-      stiffness *= 0.93f;
-    } else {
-      // This helps adding a few extra partials in the highest frequencies.
-      stiffness *= 0.98f;
-    }
-    // This prevents the highest partials from decaying too fast.
-    q_loss += q_loss_damping_rate * (1.0f - q_loss);
-    harmonic += frequency_;
-    q *= q_loss;
+  if(clock_divider_ == 0) {
+    stiffness_ = Interpolate(lut_stiffness, geometry_, 256.0f);
+    harmonic_ = frequency_;
+    stretch_factor_ = 1.0f; 
+    q_ = 500.0f * Interpolate(
+        lut_4_decades,
+        damping_ * 0.8f,
+        256.0f);
+    float brightness_attenuation = 1.0f - geometry_;
+    // Reduces the range of brightness when geometry is very low, to prevent
+    // clipping.
+    brightness_attenuation *= brightness_attenuation;
+    brightness_attenuation *= brightness_attenuation;
+    brightness_attenuation *= brightness_attenuation;
+    float brightness = brightness_ * (1.0f - 0.2f * brightness_attenuation);
+    q_loss_ = brightness * (2.0f - brightness) * 0.85f + 0.15f;
+    q_loss_damping_rate_ = geometry_ * (2.0f - geometry_) * 0.1f;
+  }
+
+  size_t i = clock_divider_;
+  float partial_frequency = harmonic_ * stretch_factor_;
+  if (partial_frequency >= 0.49f) {
+    partial_frequency = 0.49f;
+  }
+  f_[i].set_f_q<FREQUENCY_FAST>(
+      partial_frequency,
+      1.0f + partial_frequency * q_);
+  if (i < kMaxBowedModes) {
+    size_t period = 1.0f / partial_frequency;
+    while (period >= kMaxDelayLineSize) period >>= 1;
+    d_bow_[i].set_delay(period);
+    f_bow_[i].set_g_q(f_[i].g(), 1.0f + partial_frequency * 1500.0f);
+  }
+  stretch_factor_ += stiffness_;
+  if (stiffness_ < 0.0f) {
+    // Make sure that the partials do not fold back into negative frequencies.
+    stiffness_ *= 0.93f;
+  } else {
+    // This helps adding a few extra partials in the highest frequencies.
+    stiffness_ *= 0.98f;
+  }
+  // This prevents the highest partials from decaying too fast.
+  q_loss_ += q_loss_damping_rate_ * (1.0f - q_loss_);
+  harmonic_ += frequency_;
+  q_ *= q_loss_;
+
+
+  if(clock_divider_++ >= kMaxModes) {
+    clock_divider_ = 0;
   }
   
-  return num_modes;
+  return kMaxModes;
 }
 
 void Resonator::Process(
@@ -148,7 +147,7 @@ void Resonator::Process(
     // Render normal modes.
     float input = *in++ * 0.125f;
     float sum_center = 0.0f;
-    float sum_side = 0.0f;
+    //float sum_side = 0.0f;
 
     // Note: For a steady sound, the correct way of simulating the effect of
     // a pickup is to use a comb filter. But it sounds very flange-y when
@@ -160,13 +159,13 @@ void Resonator::Process(
     // approximative when the stretch factor is non null.
     // It sounds interesting nevertheless.
     amplitudes.Start();
-    aux_amplitudes.Start();
+//    aux_amplitudes.Start();
     for (size_t i = 0; i < num_modes; i++) {
       s = f_[i].Process<FILTER_MODE_BAND_PASS>(input);
       sum_center += s * amplitudes.Next();
-      sum_side += s * aux_amplitudes.Next();
+  //    sum_side += s * aux_amplitudes.Next();
     }
-    *sides++ = sum_side - sum_center;
+ //   *sides++ = sum_side - sum_center;
     
     // Render bowed modes.
     float bow_signal = 0.0f;
