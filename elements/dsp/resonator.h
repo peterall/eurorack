@@ -42,7 +42,7 @@ namespace elements {
 
 const size_t kMaxModes = 24;
 const size_t kMaxBowedModes = 2;
-const size_t kMaxDelayLineSize = 512;
+const size_t kMaxDelayLineSize = 1024;
 
 //const size_t kMaxModes = 24;
 //const size_t kMaxBowedModes = 2;
@@ -82,7 +82,7 @@ class Resonator {
   }
   
   inline void set_resolution(size_t resolution) {
-    resolution_ = std::min(resolution, kMaxModes);
+    resolution_ = previous_num_modes_ = std::min(resolution, kMaxModes);
   }
   
   inline void set_modulation_frequency(float modulation_frequency) {
@@ -123,6 +123,8 @@ class Resonator {
   float bow_signal_;
   
   size_t resolution_;
+  size_t num_modes_;
+  size_t previous_num_modes_;
 
   float harmonic_;
   float stretch_factor_;

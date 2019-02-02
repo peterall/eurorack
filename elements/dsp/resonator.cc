@@ -60,6 +60,7 @@ void Resonator::Init() {
   
   bow_signal_ = 0.0f;
   clock_divider_ = 0;
+  num_modes_ = 0;
 }
 
 size_t Resonator::ComputeFilters() {
@@ -86,6 +87,8 @@ size_t Resonator::ComputeFilters() {
   float partial_frequency = harmonic_ * stretch_factor_;
   if (partial_frequency >= 0.49f) {
     partial_frequency = 0.49f;
+  } else {
+    num_modes_ = i + 1;
   }
   f_[i].set_f_q<FREQUENCY_FAST>(
       partial_frequency,
@@ -111,10 +114,11 @@ size_t Resonator::ComputeFilters() {
 
 
   if(clock_divider_++ >= kMaxModes) {
+    previous_num_modes_ = num_modes_;
     clock_divider_ = 0;
   }
   
-  return kMaxModes;
+  return previous_num_modes_;
 }
 
 void Resonator::Process(
@@ -159,13 +163,13 @@ void Resonator::Process(
     // approximative when the stretch factor is non null.
     // It sounds interesting nevertheless.
     amplitudes.Start();
-//    aux_amplitudes.Start();
+    //aux_amplitudes.Start();
     for (size_t i = 0; i < num_modes; i++) {
       s = f_[i].Process<FILTER_MODE_BAND_PASS>(input);
       sum_center += s * amplitudes.Next();
-  //    sum_side += s * aux_amplitudes.Next();
+      //sum_side += s * aux_amplitudes.Next();
     }
- //   *sides++ = sum_side - sum_center;
+    //*sides++ = sum_side - sum_center;
     
     // Render bowed modes.
     float bow_signal = 0.0f;
