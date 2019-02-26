@@ -47,7 +47,7 @@ void Resonator::Init(float position, int resolution) {
   CosineOscillator amplitudes;
   amplitudes.Init<COSINE_OSCILLATOR_APPROXIMATE>(position);
   
-  for (int i = 0; i < resolution; ++i) {
+  for (int i = 0; i < resolution_; ++i) {
     mode_amplitude_[i] = amplitudes.Next() * 0.25f;
   }
   

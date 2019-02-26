@@ -40,7 +40,7 @@
 
 namespace plaits {
 
-const size_t kDelayLineSize = 1024;
+const size_t kDelayLineSize = 2048;
 
 enum StringNonLinearity {
   STRING_NON_LINEARITY_CURVED_BRIDGE,
