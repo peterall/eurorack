@@ -40,7 +40,11 @@
 
 namespace elements {
 
+#if defined(ELEMENTS_RESONATOR_MODES)
+const size_t kMaxModes = ELEMENTS_RESONATOR_MODES;
+#else
 const size_t kMaxModes = 24;
+#endif
 const size_t kMaxBowedModes = 2;
 const size_t kMaxDelayLineSize = 1024;
 
